@@ -1,4 +1,4 @@
-##Stock Portfolio Simulator
+## Stock Portfolio Simulator
 
 I embarked on the journey of creating a portfolio simulator (buying only) using the Python programming language driven by my passion for both finance and technology. The intersection of finance and technology presents a world of opportunities, from algorithmic trading to risk management, and this portfolio simulator represents my first step in exploring this dynamic space. By developing this simulator, I aimed to deepen my understanding of some Object Oriented Programming (OOP) elements applied to a specific need in the real world.
 

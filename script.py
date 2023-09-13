@@ -1,5 +1,4 @@
 import yfinance as yf
-
 import pandas as pd
 
 sp500 = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
@@ -89,7 +88,8 @@ def get_stock_price(stock_obj, input_stock_name):
 def keep_playing(prompt):
     keep_playing_input = prompt.message('''Do you want to keep buying shares?
     Y -> Yes
-    N -> No & Quit game''')
+    N -> No & Quit game
+    ''')
     return keep_playing_input
             
 #create portfolio object
@@ -103,25 +103,24 @@ prompt = GamePrompt()
 welcome_prompt_input = prompt.message('''Welcome to the Stock Simulator
 Do you want to start buying company shares?
 Y -> Yes
-N -> No & quit game''')
+N -> No & quit game
+''')
 
 
 def game_logic():
     stock_name = get_input_stock_name(prompt)
 
     while True:
-
         current_price = get_stock_price(stock_obj, stock_name)
-
         game_prompt = prompt.message(f'''Current price: {current_price} 
             Do you want to buy {stock_name} stocks at: ${current_price}?
             Y -> Yes
             N -> No & Quit game
             A -> Search for Another stock name
         ''')
-
         if game_prompt == 'Y':
-            input_qty_bought = prompt.message(f'How many {stock_name} stocks you want to buy?')
+            input_qty_bought = prompt.message(f'''How many {stock_name} stocks you want to buy?
+''')
             print()
             portfolio_obj.buy_stock(stock_name, int(input_qty_bought), current_price)
 

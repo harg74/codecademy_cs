@@ -1,5 +1,12 @@
 import yfinance as yf
 
+import pandas as pd
+
+sp500 = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
+data_table = pd.read_html(sp500)
+tickers_list = (data_table[0]['Symbol']).tolist()
+
+
 class Stock():
     def __init__(self):
         self.stock_name = ''
@@ -61,7 +68,30 @@ class Portfolio():
 
     def show_portfolio(self):
         print(self.stocks_dict)
+        for k, v in self.stocks_dict.items():
+            print(k,v)
 
+def get_input_stock_name(prompt):
+    if welcome_prompt_input == 'Y':
+        input_stock_name = prompt.message('''Enter the ticker symbol of the stock to get the last closing price:
+        ''')
+        return input_stock_name
+    
+def get_stock_price(stock_obj, input_stock_name):
+    if input_stock_name in tickers_list:
+        stock_price = stock_obj.current_price(input_stock_name)
+        return stock_price
+    else:
+
+        print(f'Please provide a valid ticker "{input_stock_name}", does not exists!')
+        return game_logic()
+
+def keep_playing(prompt):
+    keep_playing_input = prompt.message('''Do you want to keep buying shares?
+    Y -> Yes
+    N -> No & Quit game''')
+    return keep_playing_input
+            
 #create portfolio object
 portfolio_obj = Portfolio()
 #create stock object
@@ -69,71 +99,55 @@ stock_obj = Stock()
 #create game prompt object 
 prompt = GamePrompt()
 
-def get_stock_price(input_stock_name):
-    try:
-        stock_price = stock_obj.current_price(input_stock_name)
-        return stock_price
-
-    except:
-        print(f'Please provide a valid ticker {input_stock_name}, does not exists.')
-
 #Welcome Prompt
 welcome_prompt_input = prompt.message('''Welcome to the Stock Simulator
 Do you want to start buying company shares?
 Y -> Yes
 N -> No & quit game''')
 
-def input_stock_name():
-    if welcome_prompt_input == 'Y':
-        input_stock_name = prompt.message('''Enter the ticker symbol of the stock to get the last closing price:
+
+def game_logic():
+    stock_name = get_input_stock_name(prompt)
+
+    while True:
+
+        current_price = get_stock_price(stock_obj, stock_name)
+
+        game_prompt = prompt.message(f'''Current price: {current_price} 
+            Do you want to buy {stock_name} stocks at: ${current_price}?
+            Y -> Yes
+            N -> No & Quit game
+            A -> Search for Another stock name
         ''')
-        return input_stock_name
-    
-def keep_playing():
-    keep_playing_input = prompt.message('''Do you want to keep buying shares?
-    Y -> Yes
-    N -> No & Quit game''')
-    return keep_playing_input
-    
-stock_name = input_stock_name()
 
-#Game Logic
-while True:
+        if game_prompt == 'Y':
+            input_qty_bought = prompt.message(f'How many {stock_name} stocks you want to buy?')
+            print()
+            portfolio_obj.buy_stock(stock_name, int(input_qty_bought), current_price)
 
-    current_price = get_stock_price(stock_name)
+            portfolio_obj.show_last_buy(stock_name)
+            print()
+            portfolio_obj.show_portfolio()
+            print()
 
-    game_prompt = prompt.message(f'''Current price: {current_price} 
-        Do you want to buy {stock_name} stocks at: ${current_price}?
-        Y -> Yes
-        N -> No & Quit game
-        A -> Search for Another stock name
-    ''')
+            keep_playing_decision = keep_playing(prompt)
 
-    if game_prompt == 'Y':
-        input_qty_bought = prompt.message(f'How many {stock_name} stocks you want to buy?')
-        print()
-        portfolio_obj.buy_stock(stock_name, int(input_qty_bought), current_price)
-
-        portfolio_obj.show_last_buy(stock_name)
-        print()
-        portfolio_obj.show_portfolio()
-        print()
-
-        keep_playing_decision = keep_playing()
-
-        if keep_playing_decision == 'Y':
-            stock_name = input_stock_name()
-        elif keep_playing_decision == 'N':
+            if keep_playing_decision == 'Y':
+                stock_name = get_input_stock_name(prompt)
+            elif keep_playing_decision == 'N':
+                exit()
+            else:
+                print("Select a valid option. Type Y to keep playing or N to quit the game")
+                keep_playing()
+        elif game_prompt == 'N':   
             exit()
-        else:
-            print("Select a valid option. Type Y to keep playing or N to quit the game")
-            keep_playing()
-    elif game_prompt == 'N':   
-        exit()
+        elif game_prompt == 'A':
+            stock_name = get_input_stock_name(prompt)
 
-    elif game_prompt == 'A':
-        stock_name = input_stock_name()
-
+if welcome_prompt_input == 'Y':
+    game_logic()
+else:
+    exit()
 
 
 

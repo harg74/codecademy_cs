@@ -17,7 +17,3 @@ At this stage, with this program, you are only able to **buy** shares from compa
 - venv (virtual environment)
 
 This terminal program will allow you to select your most beloved company, select how many shares you want to buy and show you your final portfolio position (how many shares you own).
-
-An image or a GIF of your program
-A link to your code on GitHub.
-A conclusion

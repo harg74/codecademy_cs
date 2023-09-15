@@ -9,7 +9,7 @@ Such OOP elements are:
 - Methods
 - self 'keyword'
 
-At this stage, with this program, you are only able to _buy_ shares from companies listed in the S&P 500. For the sake of this project, this is the base [list](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) that I used for its development. Some of the technologies that I utilized were:
+At this stage, with this program, you are only able to _buy_ shares from companies listed in the S&P 500. For the sake of this project, this is the base [S&P 500 list](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) that I used for its development. Some of the technologies that I utilized were:
 
 - pandas library
 - yfinance library (Yahoo Finance API)
